@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-//using backend_netcore_06.Models;
+// using backend_netcore_06.Models;
 
 namespace backend_netcore_06.Controllers
 {
@@ -30,32 +30,75 @@ namespace backend_netcore_06.Controllers
     }
 
     [HttpGet("GetAllDTO")]
-    public List<ProductDTO> GetAllDTO()
+    public async Task<IActionResult> GetAllDTO()
     {
-      return lstProductDTO;
+      var response = new ResonseTypeDTO<List<ProductDTO>>()
+      {
+        StatusCode = 200,
+        Content = lstProductDTO,
+        Message = "Success",
+        DateTime = DateTime.Now
+      };
+      return StatusCode(StatusCodes.Status200OK, response);
     }
 
     [HttpGet("GetById/{productId}")]
     public async Task<IActionResult> GetById([FromRoute] string productId)
     {
-      // return lstProductDTO.FirstOrDefault(p => p.Id == int.Parse(productId));
-
       var product = await Task.FromResult(lstProductDTO.FirstOrDefault(p => p.Id == int.Parse(productId)));
+
+      var response = new ResonseTypeDTO<ProductDTO>()
+      {
+        StatusCode = 200,
+        Content = product,
+        Message = "Success",
+        DateTime = DateTime.Now
+      };
+
       if (product == null)
       {
-        // return NotFound();
+        response = new ResonseTypeDTO<ProductDTO>()
+        {
+          StatusCode = 400,
+          Content = product,
+          Message = "Success",
+          DateTime = DateTime.Now
+        };
 
-        return BadRequest("Product not found: " + productId); // 400
+        return StatusCode(StatusCodes.Status400BadRequest, response);
       }
 
-      return Ok(lstProductDTO.FirstOrDefault(p => p.Id == int.Parse(productId)));
+      response = new ResonseTypeDTO<ProductDTO>()
+      {
+        StatusCode = 200,
+        Content = product,
+        Message = "Success",
+        DateTime = DateTime.Now
+      };
+      return StatusCode(StatusCodes.Status200OK, response);
     }
 
     [HttpPost("AddProduct")]
-    public void AddProduct([FromBody]ProductDTO product)
+    public async Task<IActionResult> AddProduct([FromBody]ProductDTO product)
     {
+      var isExist = await Task.FromResult(lstProductDTO.FirstOrDefault(p => p.Name == product.Name || p.Id == product.Id));
+      if (isExist != null)
+      {
+        return StatusCode(StatusCodes.Status400BadRequest, "Product already exist");
+      }
+
       lstProduct.Add(product.Name);
       lstProductDTO.Add(product);
+
+      var response = new ResonseTypeDTO<List<ProductDTO>>()
+      {
+        StatusCode = 200,
+        Content = lstProductDTO,
+        Message = "Success",
+        DateTime = DateTime.Now
+      };
+
+      return StatusCode(StatusCodes.Status200OK, response);
     }
 
     [HttpDelete("DeleteProduct/{productId}")]
