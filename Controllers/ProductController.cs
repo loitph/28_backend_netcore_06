@@ -167,33 +167,63 @@ namespace backend_netcore_06.Controllers
       };
 
       return StatusCode(StatusCodes.Status200OK, response);
-      // return lstProductDTO.Where(p => p.Name.Contains(productName)).ToList();
     }
 
     [HttpPut("UpdateProduct")]
-    public List<ProductDTO> UpdateProduct([FromBody]ProductDTO product)
+    public async Task<IActionResult> UpdateProduct([FromBody]ProductDTO product)
     {
       var item = lstProductDTO.FirstOrDefault(p => p.Id == product.Id);
+      var response = new ResponseTypeDTO<ProductDTO>()
+      {
+        StatusCode = 200,
+        Message = "Success",
+        DateTime = DateTime.Now
+      };
       if (item != null)
       {
         item.Name = product.Name;
         item.Price = product.Price;
+        item.Alias = HelperFunction.StringToSlug(item.Name ?? "");
+
+        response = new ResponseTypeDTO<ProductDTO>()
+        {
+          StatusCode = 200,
+          Content = item,
+          Message = "Success",
+          DateTime = DateTime.Now
+        };
+        return StatusCode(StatusCodes.Status200OK, response);
       }
 
-      return lstProductDTO;
+      return StatusCode(StatusCodes.Status400BadRequest, "Product not found to update");
     }
 
     // Patch product discount 10%
     [HttpPatch("PatchProduct")]
-    public List<ProductDTO> PatchProduct([FromBody]ProductDTO product)
+    public async Task<IActionResult> PatchProduct([FromBody]ProductDTO product)
     {
       var item = lstProductDTO.FirstOrDefault(p => p.Id == product.Id);
+      var response = new ResponseTypeDTO<ProductDTO>()
+      {
+        StatusCode = 200,
+        Message = "Success",
+        DateTime = DateTime.Now
+      };
       if (item != null)
       {
         item.Price = item.Price - item.Price * 0.1m;
+
+        response = new ResponseTypeDTO<ProductDTO>()
+        {
+          StatusCode = 200,
+          Content = item,
+          Message = "Success",
+          DateTime = DateTime.Now
+        };
+        return StatusCode(StatusCodes.Status200OK, response);
       }
 
-      return lstProductDTO;
+      return StatusCode(StatusCodes.Status400BadRequest, "Product not found to update");
     }
   }
 }
