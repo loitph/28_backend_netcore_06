@@ -1,4 +1,4 @@
-public class ResonseTypeDTO<T>
+public class ResponseTypeDTO<T>
 {
   public int StatusCode { get; set; }
   public string? Message { get; set; }

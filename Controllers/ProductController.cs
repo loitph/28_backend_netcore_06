@@ -19,6 +19,14 @@ namespace backend_netcore_06.Controllers
       new ProductDTO() {Id = 3, Name = "Product 3", Price = 300.00300m}
     };
 
+    static ProductController()
+    {
+      foreach (var item in lstProductDTO)
+      {
+        item.Alias = HelperFunction.StringToSlug(item.Name ?? "");
+      }
+    }
+
     public ProductController()
     {
     }
@@ -32,7 +40,7 @@ namespace backend_netcore_06.Controllers
     [HttpGet("GetAllDTO")]
     public async Task<IActionResult> GetAllDTO()
     {
-      var response = new ResonseTypeDTO<List<ProductDTO>>()
+      var response = new ResponseTypeDTO<List<ProductDTO>>()
       {
         StatusCode = 200,
         Content = lstProductDTO,
@@ -47,7 +55,7 @@ namespace backend_netcore_06.Controllers
     {
       var product = await Task.FromResult(lstProductDTO.FirstOrDefault(p => p.Id == int.Parse(productId)));
 
-      var response = new ResonseTypeDTO<ProductDTO>()
+      var response = new ResponseTypeDTO<ProductDTO>()
       {
         StatusCode = 200,
         Content = product,
@@ -57,7 +65,7 @@ namespace backend_netcore_06.Controllers
 
       if (product == null)
       {
-        response = new ResonseTypeDTO<ProductDTO>()
+        response = new ResponseTypeDTO<ProductDTO>()
         {
           StatusCode = 400,
           Content = product,
@@ -68,7 +76,7 @@ namespace backend_netcore_06.Controllers
         return StatusCode(StatusCodes.Status400BadRequest, response);
       }
 
-      response = new ResonseTypeDTO<ProductDTO>()
+      response = new ResponseTypeDTO<ProductDTO>()
       {
         StatusCode = 200,
         Content = product,
@@ -81,6 +89,8 @@ namespace backend_netcore_06.Controllers
     [HttpPost("AddProduct")]
     public async Task<IActionResult> AddProduct([FromBody]ProductDTO product)
     {
+      product.Alias = HelperFunction.StringToSlug(product.Name ?? "");
+
       var isExist = await Task.FromResult(lstProductDTO.FirstOrDefault(p => p.Name == product.Name || p.Id == product.Id));
       if (isExist != null)
       {
@@ -90,7 +100,7 @@ namespace backend_netcore_06.Controllers
       lstProduct.Add(product.Name);
       lstProductDTO.Add(product);
 
-      var response = new ResonseTypeDTO<List<ProductDTO>>()
+      var response = new ResponseTypeDTO<List<ProductDTO>>()
       {
         StatusCode = 200,
         Content = lstProductDTO,
@@ -102,23 +112,62 @@ namespace backend_netcore_06.Controllers
     }
 
     [HttpDelete("DeleteProduct/{productId}")]
-    public List<ProductDTO> DeleteProduct([FromRoute]string productId)
+    public async Task<IActionResult> DeleteProduct([FromRoute]string productId)
     {
       var item = lstProductDTO.FirstOrDefault(p => p.Id == int.Parse(productId));
+
+      var response = new ResponseTypeDTO<List<ProductDTO>>()
+      {
+        StatusCode = 200,
+        Content = lstProductDTO,
+        Message = "Success",
+        DateTime = DateTime.Now
+      };
 
       if (item != null)
       {
         lstProductDTO.Remove(item);
         lstProduct.Remove(item.Name);
-      }
 
-      return lstProductDTO;
+        response = new ResponseTypeDTO<List<ProductDTO>>()
+        {
+          StatusCode = 200,
+          Content = lstProductDTO,
+          Message = "Success",
+          DateTime = DateTime.Now
+        };
+        return StatusCode(StatusCodes.Status200OK, response);
+      }
+      return StatusCode(StatusCodes.Status400BadRequest, "Product not found to delete");
     }
 
     [HttpGet("SearchProduct")]
-    public List<ProductDTO> SearchProduct([FromQuery]string productName)
+    public async Task<IActionResult> SearchProduct([FromQuery]string keyword)
     {
-      return lstProductDTO.Where(p => p.Name.Contains(productName)).ToList();
+      string productName = HelperFunction.StringToSlug(keyword ?? "");
+      var response = new ResponseTypeDTO<List<ProductDTO>>()
+      {
+        StatusCode = 200,
+        Content = lstProductDTO,
+        Message = "Success",
+        DateTime = DateTime.Now
+      };
+
+      if (string.IsNullOrEmpty(productName))
+      {
+        return StatusCode(StatusCodes.Status400BadRequest, "Product name is required");
+      }
+
+      response = new ResponseTypeDTO<List<ProductDTO>>()
+      {
+        StatusCode = 200,
+        Content = lstProductDTO.Where(p => p.Alias.Contains(productName)).ToList(),
+        Message = "Success",
+        DateTime = DateTime.Now
+      };
+
+      return StatusCode(StatusCodes.Status200OK, response);
+      // return lstProductDTO.Where(p => p.Name.Contains(productName)).ToList();
     }
 
     [HttpPut("UpdateProduct")]
