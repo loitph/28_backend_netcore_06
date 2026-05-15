@@ -1,0 +1,18 @@
+services:
+  sqlserver:
+    image: ${MSSQL_IMAGE}
+    container_name: ${CONTAINER_NAME}
+    restart: always
+
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${SA_PASSWORD}
+
+    ports:
+      - "${MSSQL_PORT}:${MSSQL_PRIVATE_PORT}"
+
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+
+volumes:
+  sqlserver_data:

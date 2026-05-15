@@ -1,0 +1,7 @@
+SELECT * FROM Users;
+
+ALTER TABLE Users
+DROP COLUMN Password;
+
+ALTER TABLE Users
+ADD Password VARCHAR(255);
