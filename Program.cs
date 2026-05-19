@@ -1,7 +1,11 @@
+using Models.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Remove AddApiVersioning entirely (not needed for just displaying version)
 // Remove AddSwaggerGen (use built-in OpenAPI only)
+
+builder.Services.AddDbContext<ProductStoreContext>();
 
 builder.Services.AddOpenApi(options =>
 {

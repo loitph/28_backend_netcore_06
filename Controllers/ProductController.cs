@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-// using backend_netcore_06.Models;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Models.Models;
 
 namespace backend_netcore_06.Controllers
 {
@@ -11,219 +13,69 @@ namespace backend_netcore_06.Controllers
   [ApiController]
   public class ProductController : ControllerBase
   {
-    public static List<string> lstProduct = new List<string>() {"Product 1", "Product 2", "Product 3"};
+    private readonly ProductStoreContext _context;
 
-    public static List<ProductDTO> lstProductDTO = new List<ProductDTO>() {
-      new ProductDTO() {Id = 1, Name = "Product 1", Price = 100.5m},
-      new ProductDTO() {Id = 2, Name = "Product 2", Price = 200m},
-      new ProductDTO() {Id = 3, Name = "Product 3", Price = 300.00300m}
-    };
-
-    static ProductController()
+    public ProductController(ProductStoreContext context)
     {
-      foreach (var item in lstProductDTO)
-      {
-        item.Alias = HelperFunction.StringToSlug(item.Name ?? "");
-      }
+      _context = context;
     }
 
-    public ProductController()
+    [HttpGet("GetAllProducts")]
+    public async Task<ActionResult> GetAllProducts()
     {
+      // Using FromSqlRaw to execute raw SQL query and map results to ProductDTO
+      // var products = await _context.Products.FromSqlRaw("SELECT * FROM Products").ToListAsync();
+
+      // If you want to map to a DTO instead of the entity, you can use Database.SqlQueryRaw
+      var productBaseOnDTO = await _context.Database.SqlQueryRaw<ProductDTO>("SELECT * FROM Products").ToListAsync();
+
+      return Ok(productBaseOnDTO);
+
+      // return Ok(products);
     }
 
-    [HttpGet("GetAll")]
-    public List<string> GetAll()
+    [HttpGet("GetProductsByLinq")]
+    public async Task<ActionResult> GetProductsByLinq([FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 10 )
     {
-      return lstProduct;
+      // Using FromSqlRaw to execute raw SQL query and map results to ProductDTO
+      // similar to SELECT * FROM Products OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY
+      var products = await _context.Products.Skip((pageIndex - 1) * pageSize).Take(pageSize).Select(p => new ProductDTO
+      {
+        Id = p.Id,
+        Name = p.Name,
+        Alias = p.Alias,
+        Price = p.Price,
+      }).ToListAsync();
+
+      return Ok(products);
     }
 
-    [HttpGet("GetAllDTO")]
-    public async Task<IActionResult> GetAllDTO()
+    [HttpGet("GetProductById")]
+    public async Task<ActionResult> GetProductById([FromQuery] int id = 101)
     {
-      var response = new ResponseTypeDTO<List<ProductDTO>>()
-      {
-        StatusCode = 200,
-        Content = lstProductDTO,
-        Message = "Success",
-        DateTime = DateTime.Now
-      };
-      return StatusCode(StatusCodes.Status200OK, response);
+      SqlParameter idParam = new SqlParameter("@id", id);
+      var product = await _context.Database.SqlQueryRaw<ProductDTO>("SELECT * FROM Products WHERE Id = @id", idParam).ToListAsync();
+
+      return Ok(product);
     }
 
-    [HttpGet("GetById/{productId}")]
-    public async Task<IActionResult> GetById([FromRoute] string productId)
+    [HttpGet("GetProductByIdLinq")]
+    public async Task<ActionResult> GetProductByIdLinq([FromQuery] int id = 101)
     {
-      var product = await Task.FromResult(lstProductDTO.FirstOrDefault(p => p.Id == int.Parse(productId)));
-
-      var response = new ResponseTypeDTO<ProductDTO>()
+      var product = await _context.Products.Where(p => p.Id == id).Select(p => new ProductDTO
       {
-        StatusCode = 200,
-        Content = product,
-        Message = "Success",
-        DateTime = DateTime.Now
-      };
+        Id = p.Id,
+        Name = p.Name,
+        Alias = p.Alias,
+        Price = p.Price,
+      }).ToListAsync();
 
-      if (product == null)
+      if (product.Count() == 0)
       {
-        response = new ResponseTypeDTO<ProductDTO>()
-        {
-          StatusCode = 400,
-          Content = product,
-          Message = "Success",
-          DateTime = DateTime.Now
-        };
-
-        return StatusCode(StatusCodes.Status400BadRequest, response);
+        return NotFound();
       }
 
-      response = new ResponseTypeDTO<ProductDTO>()
-      {
-        StatusCode = 200,
-        Content = product,
-        Message = "Success",
-        DateTime = DateTime.Now
-      };
-      return StatusCode(StatusCodes.Status200OK, response);
-    }
-
-    [HttpPost("AddProduct")]
-    public async Task<IActionResult> AddProduct([FromBody]ProductDTO product)
-    {
-      product.Alias = HelperFunction.StringToSlug(product.Name ?? "");
-
-      var isExist = await Task.FromResult(lstProductDTO.FirstOrDefault(p => p.Name == product.Name || p.Id == product.Id));
-      if (isExist != null)
-      {
-        return StatusCode(StatusCodes.Status400BadRequest, "Product already exist");
-      }
-
-      lstProduct.Add(product.Name);
-      lstProductDTO.Add(product);
-
-      var response = new ResponseTypeDTO<List<ProductDTO>>()
-      {
-        StatusCode = 200,
-        Content = lstProductDTO,
-        Message = "Success",
-        DateTime = DateTime.Now
-      };
-
-      return StatusCode(StatusCodes.Status200OK, response);
-    }
-
-    [HttpDelete("DeleteProduct/{productId}")]
-    public async Task<IActionResult> DeleteProduct([FromRoute]string productId)
-    {
-      var item = lstProductDTO.FirstOrDefault(p => p.Id == int.Parse(productId));
-
-      var response = new ResponseTypeDTO<List<ProductDTO>>()
-      {
-        StatusCode = 200,
-        Content = lstProductDTO,
-        Message = "Success",
-        DateTime = DateTime.Now
-      };
-
-      if (item != null)
-      {
-        lstProductDTO.Remove(item);
-        lstProduct.Remove(item.Name);
-
-        response = new ResponseTypeDTO<List<ProductDTO>>()
-        {
-          StatusCode = 200,
-          Content = lstProductDTO,
-          Message = "Success",
-          DateTime = DateTime.Now
-        };
-        return StatusCode(StatusCodes.Status200OK, response);
-      }
-      return StatusCode(StatusCodes.Status400BadRequest, "Product not found to delete");
-    }
-
-    [HttpGet("SearchProduct")]
-    public async Task<IActionResult> SearchProduct([FromQuery]string keyword)
-    {
-      string productName = HelperFunction.StringToSlug(keyword ?? "");
-      var response = new ResponseTypeDTO<List<ProductDTO>>()
-      {
-        StatusCode = 200,
-        Content = lstProductDTO,
-        Message = "Success",
-        DateTime = DateTime.Now
-      };
-
-      if (string.IsNullOrEmpty(productName))
-      {
-        return StatusCode(StatusCodes.Status400BadRequest, "Product name is required");
-      }
-
-      response = new ResponseTypeDTO<List<ProductDTO>>()
-      {
-        StatusCode = 200,
-        Content = lstProductDTO.Where(p => p.Alias.Contains(productName)).ToList(),
-        Message = "Success",
-        DateTime = DateTime.Now
-      };
-
-      return StatusCode(StatusCodes.Status200OK, response);
-    }
-
-    [HttpPut("UpdateProduct")]
-    public async Task<IActionResult> UpdateProduct([FromBody]ProductDTO product)
-    {
-      var item = lstProductDTO.FirstOrDefault(p => p.Id == product.Id);
-      var response = new ResponseTypeDTO<ProductDTO>()
-      {
-        StatusCode = 200,
-        Message = "Success",
-        DateTime = DateTime.Now
-      };
-      if (item != null)
-      {
-        item.Name = product.Name;
-        item.Price = product.Price;
-        item.Alias = HelperFunction.StringToSlug(item.Name ?? "");
-
-        response = new ResponseTypeDTO<ProductDTO>()
-        {
-          StatusCode = 200,
-          Content = item,
-          Message = "Success",
-          DateTime = DateTime.Now
-        };
-        return StatusCode(StatusCodes.Status200OK, response);
-      }
-
-      return StatusCode(StatusCodes.Status400BadRequest, "Product not found to update");
-    }
-
-    // Patch product discount 10%
-    [HttpPatch("PatchProduct")]
-    public async Task<IActionResult> PatchProduct([FromBody]ProductDTO product)
-    {
-      var item = lstProductDTO.FirstOrDefault(p => p.Id == product.Id);
-      var response = new ResponseTypeDTO<ProductDTO>()
-      {
-        StatusCode = 200,
-        Message = "Success",
-        DateTime = DateTime.Now
-      };
-      if (item != null)
-      {
-        item.Price = item.Price - item.Price * 0.1m;
-
-        response = new ResponseTypeDTO<ProductDTO>()
-        {
-          StatusCode = 200,
-          Content = item,
-          Message = "Success",
-          DateTime = DateTime.Now
-        };
-        return StatusCode(StatusCodes.Status200OK, response);
-      }
-
-      return StatusCode(StatusCodes.Status400BadRequest, "Product not found to update");
+      return Ok(product);
     }
   }
 }
