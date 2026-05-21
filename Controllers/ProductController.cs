@@ -136,6 +136,7 @@ namespace backend_netcore_06.Controllers
     {
 
       // using Mapper to map list of products to list of ProductDTO
+      // NOTE: ONLY NEED new variable newProduct when we want to add more properties to the new product, if we don't need to add more properties, we can directly map to the existing product variable
       Product newProduct = _mapper.Map<Product>(product);
 
       newProduct.Description = "";
@@ -159,18 +160,22 @@ namespace backend_netcore_06.Controllers
     [HttpPut("UpdateProductByMapper")]
     public async Task<ActionResult> UpdateProductByMapper([FromBody] ProductUpdateDTO product)
     {
+
+      // without AsNoTracking(), the existingProduct will be tracked by EF Core, and when we update it, it will cause an error because we are trying to update a tracked entity with another tracked entity (the product parameter)
+
       // before update, we need to check if the product exists in database by id
-      var existingProduct = await _context.Products.FindAsync(product.Id);
+      var existingProduct = await _context.Products.SingleOrDefaultAsync(p => p.Id == product.Id);
       if (existingProduct == null)
       {
         return NotFound($"Product with id {product.Id} not found.");
       }
 
       // using Mapper to map list of products to list of ProductDTO
-      Product updatedProduct = _mapper.Map<Product>(product);
+      _mapper.Map(product, existingProduct);
 
-      _context.Products.Update(updatedProduct);
-      await _context.SaveChangesAsync();
+      // note: we don't need to call SaveChangesAsync() here because we are using the tracked entity existingProduct, only Update() function could update the entity in database
+       await _context.SaveChangesAsync();
+      _context.Products.Update(existingProduct);
 
       // return the list of products after adding new product
       var products = await _context.Products.Select(p => new ProductDTO
@@ -188,6 +193,20 @@ namespace backend_netcore_06.Controllers
         Message = $"Product with id {product.Id} updated successfully.",
         Data = products
       });
+    }
+
+    [HttpDelete("DeleteProductById")]
+    public async Task<ActionResult> DeleteProductById([FromQuery] int id)
+    {
+      var existingProduct = await _context.Products.SingleOrDefaultAsync(p => p.Id == id);
+      if (existingProduct == null)      {
+        return NotFound($"Product with id {id} not found.");
+      }
+
+      _context.Products.Remove(existingProduct);
+      await _context.SaveChangesAsync();
+
+      return Ok($"Product with id {id} deleted successfully.");
     }
   }
 }

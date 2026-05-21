@@ -11,7 +11,6 @@ public class MappingProfile : AutoMapper.Profile
       .ReverseMap(); // auto map in both directions
 
     CreateMap<ProductUpdateDTO, Product>()
-      .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(_ => DateTime.Now))
       .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(_ => DateTime.Now))
       .ForMember(dest => dest.Alias, opt => opt.MapFrom(src => HelperFunction.StringToSlug(src.Name ?? "")))
       .ReverseMap(); // auto map in both directions
