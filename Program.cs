@@ -19,6 +19,12 @@ builder.Services.AddOpenApi(options =>
 
 builder.Services.AddControllers();
 
+// DI AutoMapper
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile(typeof(MappingProfile));
+});
+
 var app = builder.Build();
 
 app.MapControllers();
