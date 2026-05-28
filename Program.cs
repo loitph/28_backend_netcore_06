@@ -1,11 +1,10 @@
+using _28_backend_netcore_06.Models.DBQuanLyNhanVien;
 using Models.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Remove AddApiVersioning entirely (not needed for just displaying version)
-// Remove AddSwaggerGen (use built-in OpenAPI only)
-
 builder.Services.AddDbContext<ProductStoreContext>();
+builder.Services.AddDbContext<DBQuanLyNhanVienContext>();
 
 builder.Services.AddOpenApi(options =>
 {
