@@ -15,9 +15,17 @@ public partial class DBQuanLyNhanVienContext : DbContext
     {
     }
 
+    public virtual DbSet<DiaDiem> DiaDiems { get; set; }
+
+    public virtual DbSet<DiaDiemDuAn> DiaDiemDuAns { get; set; }
+
+    public virtual DbSet<DuAn> DuAns { get; set; }
+
     public virtual DbSet<NhamChuc> NhamChucs { get; set; }
 
     public virtual DbSet<NhanVien> NhanViens { get; set; }
+
+    public virtual DbSet<NhanVienDuAn> NhanVienDuAns { get; set; }
 
     public virtual DbSet<PhongBan> PhongBans { get; set; }
 
@@ -26,6 +34,44 @@ public partial class DBQuanLyNhanVienContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<DiaDiem>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__DiaDiem__3214EC07FCC9471D");
+
+            entity.ToTable("DiaDiem");
+
+            entity.Property(e => e.DiaChi).HasMaxLength(255);
+            entity.Property(e => e.TenDiaDiem).HasMaxLength(255);
+        });
+
+        modelBuilder.Entity<DiaDiemDuAn>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__DiaDiemD__3214EC07ED5D84E5");
+
+            entity.ToTable("DiaDiemDuAn");
+
+            entity.HasOne(d => d.MaDiaDiemNavigation).WithMany(p => p.DiaDiemDuAns)
+                .HasForeignKey(d => d.MaDiaDiem)
+                .HasConstraintName("FK__DiaDiemDu__MaDia__70DDC3D8");
+
+            entity.HasOne(d => d.MaDuAnNavigation).WithMany(p => p.DiaDiemDuAns)
+                .HasForeignKey(d => d.MaDuAn)
+                .HasConstraintName("FK__DiaDiemDu__MaDuA__6FE99F9F");
+        });
+
+        modelBuilder.Entity<DuAn>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__DuAn__3214EC073BA04AAB");
+
+            entity.ToTable("DuAn");
+
+            entity.Property(e => e.TenDuAn).HasMaxLength(255);
+
+            entity.HasOne(d => d.MaDiaDiemNavigation).WithMany(p => p.DuAns)
+                .HasForeignKey(d => d.MaDiaDiem)
+                .HasConstraintName("FK_DuAn_DiaDiem");
+        });
+
         modelBuilder.Entity<NhamChuc>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__NhamChuc__3214EC079EF07937");
@@ -54,6 +100,23 @@ public partial class DBQuanLyNhanVienContext : DbContext
             entity.HasOne(d => d.MaPbNavigation).WithMany(p => p.NhanViens)
                 .HasForeignKey(d => d.MaPb)
                 .HasConstraintName("FK_NhanVien_PhongBan");
+        });
+
+        modelBuilder.Entity<NhanVienDuAn>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__NhanVien__3214EC072FC3FBAB");
+
+            entity.ToTable("NhanVienDuAn");
+
+            entity.Property(e => e.MaNv).HasColumnName("MaNV");
+
+            entity.HasOne(d => d.MaDuAnNavigation).WithMany(p => p.NhanVienDuAns)
+                .HasForeignKey(d => d.MaDuAn)
+                .HasConstraintName("FK__NhanVienD__MaDuA__628FA481");
+
+            entity.HasOne(d => d.MaNvNavigation).WithMany(p => p.NhanVienDuAns)
+                .HasForeignKey(d => d.MaNv)
+                .HasConstraintName("FK__NhanVienDu__MaNV__619B8048");
         });
 
         modelBuilder.Entity<PhongBan>(entity =>

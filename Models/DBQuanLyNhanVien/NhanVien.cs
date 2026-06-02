@@ -20,4 +20,6 @@ public partial class NhanVien
     public virtual PhongBan? MaPbNavigation { get; set; }
 
     public virtual ICollection<NhamChuc> NhamChucs { get; set; } = new List<NhamChuc>();
+
+    public virtual ICollection<NhanVienDuAn> NhanVienDuAns { get; set; } = new List<NhanVienDuAn>();
 }

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("backend_netcore_06")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+03ea88de4b6bd49b156b80f169e98d0b56327d2c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a9da0e25dc7aa2a8998d0ebf5bf7f35e85051e85")]
 [assembly: System.Reflection.AssemblyProductAttribute("backend_netcore_06")]
 [assembly: System.Reflection.AssemblyTitleAttribute("backend_netcore_06")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
