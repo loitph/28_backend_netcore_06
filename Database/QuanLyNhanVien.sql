@@ -186,3 +186,71 @@ WHERE DiaDiem.TenDiaDiem = N'Dia Diem A';
 SELECT NV.Ten, DA.TenDuAn, DD.TenDiaDiem
 FROM NhanVien NV, NhanVienDuAn NVDA, DuAn DA, DiaDiemDuAn DDDA, DiaDiem DD, PhongBan PB
 WHERE PB.Id = NV.MaPB AND NV.Id = NVDA.MaNV AND DA.Id = NVDA.MaDuAn AND DD.Id = DDDA.MaDiaDiem AND DA.Id = DDDA.MaDuAn AND DD.TenDiaDiem = N'Dia Diem A';
+
+SELECT * FROM NhanVien
+WHERE YEAR(NhanVien.NgaySinh) <= (
+  SELECT Min(YEAR(NhanVien.NgaySinh)) FROM NhanVien
+);
+
+-- Cho biet moi du an co bao nhieu nhan vien
+SELECT MaDuAn, COUNT(MaDuAn) as SoNhanVien,
+(
+  SELECT NV.Id as 'Ma Nhan Vien', Ten, NgaySinh, SoDienThoai
+  FROM NhanVien NV, NhanVienDuAn NVDA
+  WHERE NV.Id = NVDA.MaNV AND NVDA.MaNV = NhanVienDuAn.MaDuAn FOR JSON PATH
+) as DanhSachNhanVien
+FROM NhanVienDuAn
+WHERE MaDuAn = 4
+GROUP BY MaDuAn;
+
+
+CREATE PROCEDURE SP_LayDanhSachNhanVienTheoDuAn (
+  @MaDuAn int
+) AS
+BEGIN
+  SELECT MaDuAn, COUNT(MaDuAn) as SoNhanVien,
+  (
+    SELECT NV.Id as 'Ma Nhan Vien', Ten, NgaySinh, SoDienThoai
+    FROM NhanVien NV, NhanVienDuAn NVDA
+    WHERE NV.Id = NVDA.MaNV AND NVDA.MaNV = NhanVienDuAn.MaDuAn FOR JSON PATH
+  ) as DanhSachNhanVien
+  FROM NhanVienDuAn
+  WHERE MaDuAn = @MaDuAn
+  GROUP BY MaDuAn;
+END;
+
+-- Goi thu tuc
+EXEC SP_LayDanhSachNhanVienTheoDuAn @MaDuAn = 3;
+
+-- alter procedure
+ALTER PROCEDURE SP_LayDanhSachNhanVienTheoDuAn (
+  @MaDuAn int
+) AS
+BEGIN
+  SELECT MaDuAn, COUNT(MaDuAn) as SoNhanVien,
+  (
+    SELECT NV.Id as 'Ma Nhan Vien', Ten, NgaySinh, SoDienThoai
+    FROM NhanVien NV, NhanVienDuAn NVDA
+    WHERE NV.Id = NVDA.MaNV AND NVDA.MaNV = NhanVienDuAn.MaDuAn FOR JSON PATH
+  ) as DanhSachNhanVien
+  FROM NhanVienDuAn
+  WHERE MaDuAn = @MaDuAn
+  GROUP BY MaDuAn;
+END
+
+-- Su dung store procedure: Lay tat ca du an theo moi nhan vien
+CREATE PROCEDURE SP_LayDanhSachDuAnTheoNhanVien (
+  @MaNV int
+) AS
+BEGIN
+  SELECT MaNV, COUNT(MaNV) as SoDuAn,
+  (
+    SELECT NV.Id as 'Ma Nhan Vien', Ten, NgaySinh, SoDienThoai
+    FROM NhanVien NV, NhanVienDuAn NVDA
+    WHERE NV.Id = NVDA.MaNV AND NVDA.MaNV = NhanVienDuAn.MaNV FOR JSON PATH
+  ) as DanhSachDuAn
+  FROM NhanVienDuAn
+  WHERE MaNV = @MaNV
+  GROUP BY MaNV;
+END
+

@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using _28_backend_netcore_06.Models.DBQuanLyNhanVien;
 using AutoMapper;
+using backend_netcore_06.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -72,6 +76,85 @@ namespace backend_netcore_06.DBQuanLyNhanVien
         TenPB = item.MaNvNavigation.MaPbNavigation.TenPb
       }).Where(item => item.TenDuAn.Contains(tenDuAn)).ToListAsync();
       return Ok(lstNhanVien);
+    }
+
+    // <ChiTietDuAnDTO> Using store procedure SP_LayDanhSachNhanVienTheoDuAn
+    // CREATE PROCEDURE SP_LayDanhSachNhanVienTheoDuAn (
+    //   @MaDuAn int
+    // ) AS
+    // BEGIN
+    //   SELECT MaDuAn, COUNT(MaDuAn) as SoNhanVien,
+    //   (
+    //     SELECT NV.Id as 'Ma Nhan Vien', Ten, NgaySinh, SoDienThoai
+    //     FROM NhanVien NV, NhanVienDuAn NVDA
+    //     WHERE NV.Id = NVDA.MaNV AND NVDA.MaNV = NhanVienDuAn.MaDuAn FOR JSON PATH
+    //   ) as DanhSachNhanVien
+    //   FROM NhanVienDuAn
+    //   WHERE MaDuAn = @MaDuAn
+    //   GROUP BY MaDuAn;
+    // END;
+    [HttpGet("LayDanhSachNhanVienTheoDuAn")]
+    public async Task<ActionResult> LayDanhSachNhanVienTheoDuAn([FromQuery] string maDuAn)
+    {
+      var lstNhanVien = await _context.Database.SqlQueryRaw<ChiTietDuAnDTO>("exec SP_LayDanhSachNhanVienTheoDuAn @MaDuAn", new SqlParameter("@MaDuAn", maDuAn)).ToListAsync();
+      foreach (var duAn in lstNhanVien)
+      {
+        duAn.ConvertJsonNhanVienDuAn();
+      }
+      return Ok(lstNhanVien);
+    }
+
+    // -- Su dung store procedure: Lay tat ca du an theo moi nhan vien
+    // CREATE PROCEDURE SP_LayDanhSachDuAnTheoNhanVien (
+    //   @MaNV int
+    // ) AS
+    // BEGIN
+    //   SELECT MaNV, COUNT(MaNV) as SoDuAn,
+    //   (
+    //     SELECT NV.Id as 'Ma Nhan Vien', Ten, NgaySinh, SoDienThoai
+    //     FROM NhanVien NV, NhanVienDuAn NVDA
+    //     WHERE NV.Id = NVDA.MaNV AND NVDA.MaNV = NhanVienDuAn.MaNV FOR JSON PATH
+    //   ) as DanhSachDuAn
+    //   FROM NhanVienDuAn
+    //   WHERE MaNV = @MaNV
+    //   GROUP BY MaNV;
+    // END;
+    // [HttpGet("LayDanhSachDuAnTheoNhanVien")]
+    // public async Task<ActionResult> LayDanhSachDuAnTheoNhanVien([FromQuery] int maNV)
+    // {
+    //   var lstDuAn = await _context.Database.SqlQueryRaw<ChiTietNhanVienDTO>("exec SP_LayDanhSachDuAnTheoNhanVien @MaNV", new SqlParameter("@MaNV", maNV)).ToListAsync();
+    //   return Ok(lstDuAn);
+    // }
+
+    [HttpPost("ThemNhanVienNhanh")]
+    public async Task<ActionResult> ThemNhanVienNhanh([FromBody] ThemNhanVienNhanhDTO model)
+    {
+      /*
+        @TableName: NhanVien
+        @DanhSachTenCot: TenNV, SoDienThoai, MaPB
+        @DanhSachGiaTri: ['Nguyen Van AAA', '99999', 2]
+      */
+
+
+      // Lay table name
+      string tableName = typeof(NhanVien).GetCustomAttribute<TableAttribute>()?.Name ?? typeof(NhanVien).Name;
+
+      // Lay danh sach ten cot
+      PropertyInfo[] properties = typeof(ThemNhanVienNhanhDTO).GetProperties();
+      string danhSachTenCot = string.Join(", ", properties.Select(item => item.Name));
+
+      // Lay gia tri dong
+      string danhSachGiaTri = $"N'[{string.Join(", ", properties.Select(item => item.GetValue(model)))}]";
+
+      SqlParameter paramTableName = new SqlParameter("@TableName",DbType.String) { Value = tableName };
+      SqlParameter paramDanhSachTenCot = new SqlParameter("@DanhSachTenCot",DbType.String) { Value = danhSachTenCot };
+      SqlParameter paramDanhSachGiaTri = new SqlParameter("@DanhSachGiaTri",DbType.String) { Value = danhSachGiaTri };
+      
+      var ketQua = await _context.Database.SqlQueryRaw<int>("EXEC InsertDynamicData_JSON @TableName, @DanhSachTenCot, @DanhSachGiaTri", paramTableName, paramDanhSachTenCot, paramDanhSachGiaTri).ToListAsync();
+
+      var res = _context.NhanViens.ToListAsync();
+
+      return Ok(res);
     }
   }
 }
