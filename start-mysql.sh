@@ -7,5 +7,5 @@ if [ "$(docker ps -aq -f name=$CONTAINER_NAME)" ]; then
     docker start $CONTAINER_NAME
 else
     echo "Container does not exist. Creating container..."
-    docker compose up -d
+    docker compose up
 fi

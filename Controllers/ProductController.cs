@@ -208,5 +208,22 @@ namespace backend_netcore_06.Controllers
 
       return Ok($"Product with id {id} deleted successfully.");
     }
+
+    [HttpPost("UploadFile")]
+    public async Task<ActionResult> UploadFile(IFormFile file)
+    {
+      if (file == null || file.Length == 0)
+      {
+        return BadRequest("No file uploaded.");
+      }
+
+      var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", file.FileName);
+      using (var stream = new FileStream(filePath, FileMode.Create))
+      {
+        await file.CopyToAsync(stream);
+      }
+
+      return Ok($"File {file.FileName} uploaded successfully.");
+    }
   }
 }

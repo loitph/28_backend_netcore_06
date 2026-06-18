@@ -156,5 +156,12 @@ namespace backend_netcore_06.DBQuanLyNhanVien
 
       return Ok(res);
     }
+
+    [HttpGet("TestErrorGetDanhSachNhanVien")]
+    public async Task<ActionResult> TestErrorGetDanhSachNhanVien()
+    {
+      // trying to throw error sample
+      throw new Exception("Error message");
+    }
   }
 }
