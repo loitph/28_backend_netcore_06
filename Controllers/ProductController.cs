@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -37,6 +38,7 @@ namespace backend_netcore_06.Controllers
       // return Ok(products);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpGet("GetProductsByLinq")]
     public async Task<ActionResult> GetProductsByLinq([FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 10 )
     {
