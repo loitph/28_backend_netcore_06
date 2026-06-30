@@ -29,6 +29,9 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
 builder.Services.AddDbContext<ProductStoreContext>();
 builder.Services.AddDbContext<DBQuanLyNhanVienContext>();
 
+//DI memory cache
+builder.Services.AddMemoryCache();
+
 
 builder.Services.AddOpenApi(options =>
 {
