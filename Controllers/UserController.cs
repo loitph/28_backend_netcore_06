@@ -84,11 +84,13 @@ namespace backend_netcore_06.Controllers
 
     private readonly UserDBContext _context;
     private readonly JwtAuthService _jwtService;
+    private readonly ILogger<UserController> _logger;
 
-    public UserController(UserDBContext context, JwtAuthService jwtService)
+    public UserController(UserDBContext context, JwtAuthService jwtService, ILogger<UserController> logger)
     {
         _context = context;
         _jwtService = jwtService;
+        _logger = logger;
     }
 
     [HttpPost("register")]
@@ -132,22 +134,34 @@ namespace backend_netcore_06.Controllers
     [HttpPost("Login")]
     public async Task<IActionResult> Login([FromBody]UserLoginDTO user)
     {
+      // Lấy IP của client để phục vụ audit đăng nhập
+      var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+
       // check login -> create token
       User userLogin = _context.Users.SingleOrDefault(item => item.Username == user.UserNameOrEmailOrPhone || item.Email == user.UserNameOrEmailOrPhone || item.Phone == user.UserNameOrEmailOrPhone);
       if (userLogin == null)
       {
+        _logger.LogWarning("Đăng nhập THẤT BẠI: không tìm thấy tài khoản {Account} từ IP {Ip}",
+            user.UserNameOrEmailOrPhone, ipAddress);
         return BadRequest("User not found");
       }
 
       // check pass with hash
       if (!HelperFunction.VerifyPassword(user.Password, userLogin.HashPassword))
       {
+        _logger.LogWarning("Đăng nhập THẤT BẠI: sai mật khẩu cho user {Username} (Id {UserId}) từ IP {Ip}",
+            userLogin.Username, userLogin.Id, ipAddress);
         return BadRequest("Password incorrect");
       }
 
-      // if correct
-      
+      // if correct -> ghi nhận thời điểm đăng nhập
+      var loginTime = DateTime.Now;
       var token = _jwtService.GenerateToken(user);
+
+      // {LoginTime} là property có cấu trúc -> dễ truy vấn/lọc theo thời gian đăng nhập về sau
+      _logger.LogInformation("Đăng nhập THÀNH CÔNG: user {Username} (Id {UserId}) lúc {LoginTime:yyyy-MM-dd HH:mm:ss} từ IP {Ip}",
+          userLogin.Username, userLogin.Id, loginTime, ipAddress);
+
       return Ok(token);
     }
 

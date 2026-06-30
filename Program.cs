@@ -11,8 +11,20 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using middleware.Middleware;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// ============================================================
+// Serilog: đọc toàn bộ cấu hình từ appsettings.json (mục "Serilog")
+//   - ReadFrom.Configuration  -> lấy MinimumLevel / WriteTo / Enrich từ file config
+//   - ReadFrom.Services       -> cho phép các enricher đăng ký qua DI hoạt động
+//   - Enrich.FromLogContext   -> kèm theo các property gắn qua LogContext.PushProperty(...)
+// ============================================================
+builder.Host.UseSerilog((context, services, configuration) => configuration
+    .ReadFrom.Configuration(context.Configuration)
+    .ReadFrom.Services(services)
+    .Enrich.FromLogContext());
 
 builder.Services.AddDbContext<ProductStoreContext>();
 builder.Services.AddDbContext<DBQuanLyNhanVienContext>();
@@ -134,6 +146,10 @@ builder.Services.AddTransient<CountIpRequestMiddleware>();
 
 var app = builder.Build();
 
+// Ghi log mỗi request HTTP thành 1 dòng tóm tắt (method, path, status code, thời gian xử lý)
+// thay cho hàng loạt log mặc định ồn ào của ASP.NET Core.
+app.UseSerilogRequestLogging();
+
 app.UseCors("AllowGETData");
 app.UseCors("AllowPOSTData");
 
@@ -164,6 +180,15 @@ app.UseExceptionHandler(errorApp =>
             var exceptionType = exception.GetType().Name;
             var exceptionMessage = exception.Message;
             var stackTrace = exception.StackTrace;
+
+            // Ghi log lỗi có cấu trúc qua Serilog (kèm stack trace từ object exception)
+            var logger = context.RequestServices
+                .GetRequiredService<ILoggerFactory>()
+                .CreateLogger("GlobalExceptionHandler");
+            logger.LogError(
+                exception,
+                "Lỗi chưa xử lý tại {Path} từ IP {Ip} (User-Agent: {UserAgent})",
+                request.Path, ipAddress, userAgent);
 
             // Stack Trace: {stackTrace}\n
             await context.Response.WriteAsync($"Error: {exceptionType}\nMessage: {exceptionMessage}\nIP Address: {ipAddress}\nUser Agent: {userAgent}");

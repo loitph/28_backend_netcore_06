@@ -17,11 +17,15 @@ namespace backend_netcore_06.Controllers
   {
     private readonly ProductStoreContext _context;
     private readonly IMapper _mapper;
+    private readonly ILogger<ProductController> _logger;
 
-    public ProductController(ProductStoreContext context, IMapper mapper)
+    // ILogger<ProductController> được DI tự inject vào — không cần đăng ký gì thêm.
+    // Tên category của log sẽ là "backend_netcore_06.Controllers.ProductController".
+    public ProductController(ProductStoreContext context, IMapper mapper, ILogger<ProductController> logger)
     {
       _context = context;
       _mapper = mapper;
+      _logger = logger;
     }
 
     [HttpGet("GetAllProducts")]
@@ -32,6 +36,10 @@ namespace backend_netcore_06.Controllers
 
       // If you want to map to a DTO instead of the entity, you can use Database.SqlQueryRaw
       var productBaseOnDTO = await _context.Database.SqlQueryRaw<ProductDTO>("SELECT * FROM Products").ToListAsync();
+
+      // Structured logging: {Count} là property có cấu trúc, KHÔNG phải nối chuỗi.
+      // Serilog lưu cả message lẫn property "Count" => dễ tìm kiếm/lọc về sau.
+      _logger.LogInformation("Đã lấy tất cả sản phẩm, trả về {Count} bản ghi", productBaseOnDTO.Count);
 
       return Ok(productBaseOnDTO);
 
@@ -77,6 +85,8 @@ namespace backend_netcore_06.Controllers
 
       if (product.Count() == 0)
       {
+        // Mức Warning: việc bất thường nhưng không phải lỗi hệ thống.
+        _logger.LogWarning("Không tìm thấy sản phẩm với Id = {ProductId}", id);
         return NotFound();
       }
 
@@ -99,38 +109,52 @@ namespace backend_netcore_06.Controllers
     [HttpPost("CreateProduct")]
     public async Task<ActionResult> CreateProduct([FromBody] ProductDTO product)
     {
-      // add product to database by using Linq
-      // with auto-increase id
-      // auto set CreatedAt, UpdatedAt to current date
-      var newProduct = new Product
+      // {@Product} dùng dấu @ để Serilog "destructure" cả object thành property có cấu trúc
+      // (ghi ra dạng JSON các field), thay vì chỉ gọi ToString().
+      _logger.LogInformation("Bắt đầu tạo sản phẩm mới: {@Product}", product);
+
+      try
       {
-        Name = product.Name,
-        Price = product.Price,
-        Description = "",
-      };
+        // add product to database by using Linq
+        // with auto-increase id
+        // auto set CreatedAt, UpdatedAt to current date
+        var newProduct = new Product
+        {
+          Name = product.Name,
+          Price = product.Price,
+          Description = "",
+        };
 
-      newProduct.CreatedAt = DateTime.Now;
-      newProduct.UpdatedAt = DateTime.Now;
-      // auto set Alias to name with StringToSlug
-      newProduct.Alias = HelperFunction.StringToSlug(product.Name);
+        newProduct.CreatedAt = DateTime.Now;
+        newProduct.UpdatedAt = DateTime.Now;
+        // auto set Alias to name with StringToSlug
+        newProduct.Alias = HelperFunction.StringToSlug(product.Name);
 
-      newProduct.ImageUrl = "";
-      newProduct.Deleted = false;
+        newProduct.ImageUrl = "";
+        newProduct.Deleted = false;
 
-      _context.Products.Add(newProduct);
-      await _context.SaveChangesAsync();
+        _context.Products.Add(newProduct);
+        await _context.SaveChangesAsync();
 
+        _logger.LogInformation("Tạo sản phẩm thành công, Id mới = {ProductId}", newProduct.Id);
 
-      // return the list of products after adding new product
-      var products = await _context.Products.Select(p => new ProductDTO
+        // return the list of products after adding new product
+        var products = await _context.Products.Select(p => new ProductDTO
+        {
+          Id = p.Id,
+          Name = p.Name,
+          Alias = p.Alias,
+          Price = p.Price,
+        }).ToListAsync();
+
+        return Ok(products);
+      }
+      catch (Exception ex)
       {
-        Id = p.Id,
-        Name = p.Name,
-        Alias = p.Alias,
-        Price = p.Price,
-      }).ToListAsync();
-
-      return Ok(products);
+        // Tham số đầu tiên là exception => Serilog ghi luôn cả stack trace.
+        _logger.LogError(ex, "Lỗi khi tạo sản phẩm {ProductName}", product.Name);
+        return StatusCode(500, "Có lỗi xảy ra khi tạo sản phẩm.");
+      }
     }
 
     [HttpPost("CreateProductByMapper")]
