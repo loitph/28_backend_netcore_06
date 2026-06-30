@@ -9,6 +9,7 @@ using Models.Models;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using middleware.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,10 +20,45 @@ builder.Services.AddDbContext<DBQuanLyNhanVienContext>();
 
 builder.Services.AddOpenApi(options =>
 {
+    // Tài liệu OpenAPI native (/openapi/v1.json) chính là tài liệu mà Swagger UI đọc.
+    // Vì vậy security scheme phải được khai báo ở ĐÂY, không phải ở AddSwaggerGen.
     options.AddDocumentTransformer((document, context, cancellationToken) =>
     {
         document.Info.Version = "0.1.1";
         document.Info.Title = "backend_netcore_06";
+
+        // Khai báo scheme Bearer -> tạo nút "Authorize" + ô nhập token trong Swagger UI
+        document.Components ??= new OpenApiComponents();
+        document.Components.SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
+        document.Components.SecuritySchemes["Bearer"] = new OpenApiSecurityScheme
+        {
+            Name = "Authorization",
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer",
+            BearerFormat = "JWT",
+            In = ParameterLocation.Header,
+            Description = "Nhập token JWT (KHÔNG cần thêm tiền tố 'Bearer ')"
+        };
+
+        return Task.CompletedTask;
+    });
+
+    // Chỉ gắn yêu cầu bảo mật (icon ổ khóa) cho endpoint có [Authorize] và không có [AllowAnonymous]
+    options.AddOperationTransformer((operation, context, cancellationToken) =>
+    {
+        var metadata = context.Description.ActionDescriptor.EndpointMetadata;
+        var requiresAuth = metadata.OfType<AuthorizeAttribute>().Any()
+            && !metadata.OfType<AllowAnonymousAttribute>().Any();
+
+        if (requiresAuth)
+        {
+            operation.Security ??= new List<OpenApiSecurityRequirement>();
+            operation.Security.Add(new OpenApiSecurityRequirement
+            {
+                [new OpenApiSecuritySchemeReference("Bearer", context.Document)] = new List<string>()
+            });
+        }
+
         return Task.CompletedTask;
     });
 });
@@ -36,35 +72,6 @@ builder.Services.AddDbContext<UserDBContext>(options =>
 });
 
 builder.Services.AddControllers();
-
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "My API",
-        Version = "v1",
-        Description = "API documentation for .NET 10"
-    });
-    // Khai báo scheme Bearer -> tạo nút "Authorize" + ô nhập token trong Swagger
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "Nhập token JWT vào ô dưới đây"
-    });
-
-    // Áp scheme cho toàn bộ endpoint -> hiện icon ổ khóa và tự gắn header Authorization khi gọi API
-    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecuritySchemeReference("Bearer", document),
-            new List<string>()
-        }
-    });
-});
 
 // DI AutoMapper
 builder.Services.AddAutoMapper(cfg =>
@@ -95,7 +102,8 @@ builder.Services.AddCors(options =>
 
 
 //DI authentication - authorization = jwt
-var key = builder.Configuration["Jwt:Key"];           // Khóa bí mật để ký token
+var key = builder.Configuration["Jwt:Key"]              // Khóa bí mật để ký token
+    ?? throw new InvalidOperationException("Thiếu cấu hình 'Jwt:Key' trong appsettings.json");
 var issuer = builder.Configuration["Jwt:Issuer"];     // Issuer (bên phát hành token)
 var audience = builder.Configuration["Jwt:Audience"]; // Audience (người nhận token)
 // 2. Cấu hình Authentication sử dụng JWT Bearer
