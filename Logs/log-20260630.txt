@@ -556,3 +556,218 @@
 2026-06-30 19:36:11.386 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Disposing connection to database 'db_user' on server 'localhost,1433'.
 2026-06-30 19:36:11.386 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Disposed connection to database '' on server '' (0ms).
 2026-06-30 19:36:11.386 +07:00 [INF] Microsoft.AspNetCore.Hosting.Diagnostics Request finished HTTP/1.1 POST http://localhost:5124/api/User/Login - 200 null text/plain; charset=utf-8 618.5968ms
+2026-06-30 19:37:32.299 +07:00 [INF] Microsoft.Hosting.Lifetime Application is shutting down...
+2026-06-30 19:37:32.300 +07:00 [DBG] Microsoft.Extensions.Hosting.Internal.Host Hosting stopping
+2026-06-30 19:37:32.313 +07:00 [DBG] Microsoft.Extensions.Hosting.Internal.Host Hosting stopped
+2026-06-30 20:36:12.645 +07:00 [DBG] Microsoft.Extensions.Hosting.Internal.Host Hosting starting
+2026-06-30 20:36:12.674 +07:00 [INF] Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager User profile is available. Using '/Users/loitph/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-06-30 20:36:12.707 +07:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5124
+2026-06-30 20:36:12.707 +07:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-06-30 20:36:12.707 +07:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-06-30 20:36:12.707 +07:00 [INF] Microsoft.Hosting.Lifetime Content root path: /Users/loitph/Codezone/dotnet/BCNET06/28_backend_netcore_06
+2026-06-30 20:36:12.707 +07:00 [DBG] Microsoft.Extensions.Hosting.Internal.Host Hosting started
+2026-06-30 20:36:16.959 +07:00 [INF] Microsoft.AspNetCore.Hosting.Diagnostics Request starting HTTP/1.1 GET http://localhost:5124/index.html - null null
+2026-06-30 20:36:17.005 +07:00 [INF] Serilog.AspNetCore.RequestLoggingMiddleware HTTP GET /index.html responded 304 in 21.3719 ms
+2026-06-30 20:36:17.014 +07:00 [INF] Microsoft.AspNetCore.Hosting.Diagnostics Request finished HTTP/1.1 GET http://localhost:5124/index.html - 304 null null 56.4243ms
+2026-06-30 20:36:17.042 +07:00 [INF] Microsoft.AspNetCore.Hosting.Diagnostics Request starting HTTP/1.1 GET http://localhost:5124/index.css - null null
+2026-06-30 20:36:17.042 +07:00 [INF] Microsoft.AspNetCore.Hosting.Diagnostics Request starting HTTP/1.1 GET http://localhost:5124/index.js - null null
+2026-06-30 20:36:17.042 +07:00 [INF] Microsoft.AspNetCore.Hosting.Diagnostics Request starting HTTP/1.1 GET http://localhost:5124/_framework/aspnetcore-browser-refresh.js - null null
+2026-06-30 20:36:17.042 +07:00 [INF] Microsoft.AspNetCore.Hosting.Diagnostics Request starting HTTP/1.1 GET http://localhost:5124/swagger-ui-standalone-preset.js - null null
+2026-06-30 20:36:17.042 +07:00 [INF] Microsoft.AspNetCore.Hosting.Diagnostics Request starting HTTP/1.1 GET http://localhost:5124/swagger-ui.css - null null
+2026-06-30 20:36:17.042 +07:00 [INF] Microsoft.AspNetCore.Hosting.Diagnostics Request starting HTTP/1.1 GET http://localhost:5124/swagger-ui-bundle.js - null null
+2026-06-30 20:36:17.043 +07:00 [INF] Microsoft.AspNetCore.Hosting.Diagnostics Request finished HTTP/1.1 GET http://localhost:5124/_framework/aspnetcore-browser-refresh.js - 200 16091 application/javascript; charset=utf-8 1.739ms
+2026-06-30 20:36:17.044 +07:00 [INF] Serilog.AspNetCore.RequestLoggingMiddleware HTTP GET /index.js responded 304 in 1.1411 ms
+2026-06-30 20:36:17.044 +07:00 [INF] Microsoft.AspNetCore.Hosting.Diagnostics Request finished HTTP/1.1 GET http://localhost:5124/index.js - 304 null null 2.6642ms
+2026-06-30 20:36:17.048 +07:00 [INF] Serilog.AspNetCore.RequestLoggingMiddleware HTTP GET /index.css responded 304 in 5.3929 ms
+2026-06-30 20:36:17.048 +07:00 [INF] Serilog.AspNetCore.RequestLoggingMiddleware HTTP GET /swagger-ui.css responded 304 in 5.3655 ms
+2026-06-30 20:36:17.049 +07:00 [INF] Microsoft.AspNetCore.Hosting.Diagnostics Request finished HTTP/1.1 GET http://localhost:5124/index.css - 304 null null 7.127ms
+2026-06-30 20:36:17.049 +07:00 [INF] Microsoft.AspNetCore.Hosting.Diagnostics Request finished HTTP/1.1 GET http://localhost:5124/swagger-ui.css - 304 null null 7.18ms
+2026-06-30 20:36:17.049 +07:00 [INF] Serilog.AspNetCore.RequestLoggingMiddleware HTTP GET /swagger-ui-standalone-preset.js responded 304 in 6.1248 ms
+2026-06-30 20:36:17.049 +07:00 [INF] Microsoft.AspNetCore.Hosting.Diagnostics Request finished HTTP/1.1 GET http://localhost:5124/swagger-ui-standalone-preset.js - 304 null null 7.4412ms
+2026-06-30 20:36:17.054 +07:00 [INF] Serilog.AspNetCore.RequestLoggingMiddleware HTTP GET /swagger-ui-bundle.js responded 304 in 10.7235 ms
+2026-06-30 20:36:17.054 +07:00 [INF] Microsoft.AspNetCore.Hosting.Diagnostics Request finished HTTP/1.1 GET http://localhost:5124/swagger-ui-bundle.js - 304 null null 12.7077ms
+2026-06-30 20:36:17.091 +07:00 [INF] Microsoft.AspNetCore.Hosting.Diagnostics Request starting HTTP/1.1 GET http://localhost:5124/openapi/v1.json - null null
+2026-06-30 20:36:17.140 +07:00 [DBG] Microsoft.EntityFrameworkCore.Infrastructure An 'IServiceProvider' was created for internal use by Entity Framework.
+2026-06-30 20:36:17.292 +07:00 [DBG] Microsoft.EntityFrameworkCore.Model The index {'IdUser'} was not created on entity type 'UserRole' as the properties are already covered by the index {'IdUser', 'IdRole'}.
+2026-06-30 20:36:17.354 +07:00 [DBG] Microsoft.EntityFrameworkCore.Infrastructure Entity Framework Core 10.0.8 initialized 'UserDBContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:10.0.8' with options: EngineType=SqlServer 
+2026-06-30 20:36:17.366 +07:00 [DBG] Microsoft.EntityFrameworkCore.Query Compiling query expression: 
+'DbSet<IpCount>()
+    .SingleOrDefault(item => item.Ip == @ipAddress && item.DateRequest == (DateTime?)DateTime.Today)'
+2026-06-30 20:36:17.478 +07:00 [DBG] Microsoft.EntityFrameworkCore.Query Generated query execution expression: 
+'queryContext => ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync<IpCount>(
+    asyncEnumerable: SingleQueryingEnumerable.Create<IpCount>(
+        relationalQueryContext: (RelationalQueryContext)queryContext, 
+        relationalCommandResolver: parameters => [LIFTABLE Constant: RelationalCommandCache.QueryExpression(
+            Projection Mapping:
+                EmptyProjectionMember -> Dictionary<IPropertyBase, int> { [Property: IpCount.Id (int) Required PK AfterSave:Throw ValueGenerated.OnAdd, 0], [Property: IpCount.Count (int) Required, 1], [Property: IpCount.DateRequest (DateTime?), 2], [Property: IpCount.Ip (string) Required, 3] }
+            SELECT TOP(2) i.Id, i.Count, i.DateRequest, i.Ip
+            FROM IpCounts AS i
+            WHERE (i.Ip == @ipAddress) && (i.DateRequest == CONVERT(date, GETDATE()))) | Resolver: c => new RelationalCommandCache(
+            c.Dependencies.MemoryCache, 
+            c.RelationalDependencies.QuerySqlGeneratorFactory, 
+            c.RelationalDependencies.RelationalParameterBasedSqlProcessorFactory, 
+            Projection Mapping:
+                EmptyProjectionMember -> Dictionary<IPropertyBase, int> { [Property: IpCount.Id (int) Required PK AfterSave:Throw ValueGenerated.OnAdd, 0], [Property: IpCount.Count (int) Required, 1], [Property: IpCount.DateRequest (DateTime?), 2], [Property: IpCount.Ip (string) Required, 3] }
+            SELECT TOP(2) i.Id, i.Count, i.DateRequest, i.Ip
+            FROM IpCounts AS i
+            WHERE (i.Ip == @ipAddress) && (i.DateRequest == CONVERT(date, GETDATE())), 
+            False, 
+            MultipleParameters
+        )].GetRelationalCommandTemplate(parameters), 
+        readerColumns: null, 
+        shaper: (queryContext, dataReader, resultContext, resultCoordinator) => 
+        {
+            IpCount entity;
+            entity = 
+            {
+                MaterializationContext materializationContext1;
+                IEntityType entityType1;
+                IpCount instance1;
+                InternalEntityEntry entry1;
+                bool hasNullKey1;
+                materializationContext1 = new MaterializationContext(
+                    [LIFTABLE Constant: ValueBuffer | Resolver: _ => (object)ValueBuffer.Empty], 
+                    queryContext.Context
+                );
+                instance1 = default(IpCount);
+                entry1 = queryContext.TryGetEntry(
+                    key: [LIFTABLE Constant: Key: IpCount.Id PK | Resolver: c => c.Dependencies.Model.FindEntityType("_28_backend_netcore_06.Models.DBUser.IpCount").FindPrimaryKey()], 
+                    keyValues: new object[]{ (object)dataReader.GetInt32(0) }, 
+                    throwOnNullKey: True, 
+                    hasNullKey: hasNullKey1);
+                !(hasNullKey1) ? entry1 != default(InternalEntityEntry) ? 
+                {
+                    entityType1 = entry1.EntityType;
+                    return instance1 = (IpCount)entry1.Entity;
+                } : 
+                {
+                    ISnapshot shadowSnapshot1;
+                    shadowSnapshot1 = [LIFTABLE Constant: Snapshot | Resolver: _ => Snapshot.Empty];
+                    entityType1 = [LIFTABLE Constant: EntityType: IpCount | Resolver: namelessParameter{0} => namelessParameter{0}.Dependencies.Model.FindEntityType("_28_backend_netcore_06.Models.DBUser.IpCount")];
+                    instance1 = switch (entityType1)
+                    {
+                        case [LIFTABLE Constant: EntityType: IpCount | Resolver: namelessParameter{1} => namelessParameter{1}.Dependencies.Model.FindEntityType("_28_backend_netcore_06.Models.DBUser.IpCount")]: 
+                            {
+                                return 
+                                {
+                                    IpCount instance;
+                                    instance = new IpCount();
+                                    instance.<Id>k__BackingField = dataReader.GetInt32(0);
+                                    instance.<Count>k__BackingField = dataReader.GetInt32(1);
+                                    instance.<DateRequest>k__BackingField = dataReader.IsDBNull(2) ? default(DateTime?) : (DateTime?)dataReader.GetDateTime(2);
+                                    instance.<Ip>k__BackingField = dataReader.GetString(3);
+                                    (instance is IInjectableService) ? ((IInjectableService)instance).Injected(
+                                        context: materializationContext1.Context, 
+                                        entity: instance, 
+                                        queryTrackingBehavior: TrackAll, 
+                                        structuralType: [LIFTABLE Constant: EntityType: IpCount | Resolver: namelessParameter{2} => namelessParameter{2}.Dependencies.Model.FindEntityType("_28_backend_netcore_06.Models.DBUser.IpCount")]) : default(void);
+                                    return instance;
+                                }}
+                        default: 
+                            default(IpCount)
+                    }
+                    ;
+                    entry1 = entityType1 == default(IEntityType) ? default(InternalEntityEntry) : queryContext.StartTracking(
+                        entityType: entityType1, 
+                        entity: instance1, 
+                        snapshot: shadowSnapshot1);
+                    return instance1;
+                } : default(void);
+                return instance1;
+            };
+            return entity;
+        }, 
+        contextType: _28_backend_netcore_06.Models.DBUser.UserDBContext, 
+        standAloneStateManager: False, 
+        detailedErrorsEnabled: False, 
+        threadSafetyChecksEnabled: True), 
+    cancellationToken: queryContext.CancellationToken)'
+2026-06-30 20:36:17.496 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Creating DbConnection.
+2026-06-30 20:36:17.505 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Created DbConnection. (8ms).
+2026-06-30 20:36:17.506 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Opening connection to database 'db_user' on server 'localhost,1433'.
+2026-06-30 20:36:17.637 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Opened connection to database 'db_user' on server 'localhost,1433'.
+2026-06-30 20:36:17.675 +07:00 [DBG] Microsoft.EntityFrameworkCore.ChangeTracking Context 'UserDBContext' started tracking 'IpCount' entity. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values.
+2026-06-30 20:36:17.684 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Closing connection to database 'db_user' on server 'localhost,1433'.
+2026-06-30 20:36:17.686 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Closed connection to database 'db_user' on server 'localhost,1433' (1ms).
+2026-06-30 20:36:17.687 +07:00 [DBG] Microsoft.EntityFrameworkCore.Update SaveChanges starting for 'UserDBContext'.
+2026-06-30 20:36:17.687 +07:00 [DBG] Microsoft.EntityFrameworkCore.ChangeTracking DetectChanges starting for 'UserDBContext'.
+2026-06-30 20:36:17.691 +07:00 [DBG] Microsoft.EntityFrameworkCore.ChangeTracking The unchanged property 'IpCount.Count' was detected as changed and will be marked as modified. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see property values.
+2026-06-30 20:36:17.693 +07:00 [DBG] Microsoft.EntityFrameworkCore.ChangeTracking An entity of type 'IpCount' tracked by 'UserDBContext' changed state from '"Unchanged"' to '"Modified"'. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values.
+2026-06-30 20:36:17.695 +07:00 [DBG] Microsoft.EntityFrameworkCore.ChangeTracking DetectChanges completed for 'UserDBContext'.
+2026-06-30 20:36:17.710 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Opening connection to database 'db_user' on server 'localhost,1433'.
+2026-06-30 20:36:17.711 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Opened connection to database 'db_user' on server 'localhost,1433'.
+2026-06-30 20:36:17.732 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Closing connection to database 'db_user' on server 'localhost,1433'.
+2026-06-30 20:36:17.732 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Closed connection to database 'db_user' on server 'localhost,1433' (0ms).
+2026-06-30 20:36:17.733 +07:00 [DBG] Microsoft.EntityFrameworkCore.ChangeTracking An entity of type 'IpCount' tracked by 'UserDBContext' changed state from '"Modified"' to '"Unchanged"'. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values.
+2026-06-30 20:36:17.735 +07:00 [DBG] Microsoft.EntityFrameworkCore.Update SaveChanges completed for 'UserDBContext' with 1 entities written to the database.
+2026-06-30 20:36:17.736 +07:00 [INF] Microsoft.AspNetCore.Routing.EndpointMiddleware Executing endpoint 'HTTP: GET /openapi/{documentName}.json'
+2026-06-30 20:36:17.783 +07:00 [INF] Microsoft.AspNetCore.Routing.EndpointMiddleware Executed endpoint 'HTTP: GET /openapi/{documentName}.json'
+2026-06-30 20:36:17.783 +07:00 [INF] Serilog.AspNetCore.RequestLoggingMiddleware HTTP GET /openapi/v1.json responded 200 in 692.2888 ms
+2026-06-30 20:36:17.784 +07:00 [DBG] Microsoft.EntityFrameworkCore.Infrastructure 'UserDBContext' disposed.
+2026-06-30 20:36:17.785 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Disposing connection to database 'db_user' on server 'localhost,1433'.
+2026-06-30 20:36:17.786 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Disposed connection to database '' on server '' (0ms).
+2026-06-30 20:36:17.786 +07:00 [INF] Microsoft.AspNetCore.Hosting.Diagnostics Request finished HTTP/1.1 GET http://localhost:5124/openapi/v1.json - 200 null application/json;charset=utf-8 695.3167ms
+2026-06-30 20:36:38.269 +07:00 [INF] Microsoft.AspNetCore.Hosting.Diagnostics Request starting HTTP/1.1 GET http://localhost:5124/api/DemoFilter/TestExceptionFilter - null null
+2026-06-30 20:36:38.292 +07:00 [DBG] Microsoft.EntityFrameworkCore.Infrastructure Entity Framework Core 10.0.8 initialized 'UserDBContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:10.0.8' with options: EngineType=SqlServer 
+2026-06-30 20:36:38.295 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Creating DbConnection.
+2026-06-30 20:36:38.296 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Created DbConnection. (0ms).
+2026-06-30 20:36:38.296 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Opening connection to database 'db_user' on server 'localhost,1433'.
+2026-06-30 20:36:38.300 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Opened connection to database 'db_user' on server 'localhost,1433'.
+2026-06-30 20:36:38.318 +07:00 [DBG] Microsoft.EntityFrameworkCore.ChangeTracking Context 'UserDBContext' started tracking 'IpCount' entity. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values.
+2026-06-30 20:36:38.320 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Closing connection to database 'db_user' on server 'localhost,1433'.
+2026-06-30 20:36:38.320 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Closed connection to database 'db_user' on server 'localhost,1433' (0ms).
+2026-06-30 20:36:38.320 +07:00 [DBG] Microsoft.EntityFrameworkCore.Update SaveChanges starting for 'UserDBContext'.
+2026-06-30 20:36:38.320 +07:00 [DBG] Microsoft.EntityFrameworkCore.ChangeTracking DetectChanges starting for 'UserDBContext'.
+2026-06-30 20:36:38.321 +07:00 [DBG] Microsoft.EntityFrameworkCore.ChangeTracking The unchanged property 'IpCount.Count' was detected as changed and will be marked as modified. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see property values.
+2026-06-30 20:36:38.321 +07:00 [DBG] Microsoft.EntityFrameworkCore.ChangeTracking An entity of type 'IpCount' tracked by 'UserDBContext' changed state from '"Unchanged"' to '"Modified"'. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values.
+2026-06-30 20:36:38.321 +07:00 [DBG] Microsoft.EntityFrameworkCore.ChangeTracking DetectChanges completed for 'UserDBContext'.
+2026-06-30 20:36:38.322 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Opening connection to database 'db_user' on server 'localhost,1433'.
+2026-06-30 20:36:38.322 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Opened connection to database 'db_user' on server 'localhost,1433'.
+2026-06-30 20:36:38.335 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Closing connection to database 'db_user' on server 'localhost,1433'.
+2026-06-30 20:36:38.335 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Closed connection to database 'db_user' on server 'localhost,1433' (0ms).
+2026-06-30 20:36:38.335 +07:00 [DBG] Microsoft.EntityFrameworkCore.ChangeTracking An entity of type 'IpCount' tracked by 'UserDBContext' changed state from '"Modified"' to '"Unchanged"'. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values.
+2026-06-30 20:36:38.335 +07:00 [DBG] Microsoft.EntityFrameworkCore.Update SaveChanges completed for 'UserDBContext' with 1 entities written to the database.
+2026-06-30 20:36:38.335 +07:00 [INF] Microsoft.AspNetCore.Routing.EndpointMiddleware Executing endpoint 'backend_netcore_06.Controllers.DemoFilterController.TestExceptionFilter (backend_netcore_06)'
+2026-06-30 20:36:38.338 +07:00 [INF] Microsoft.AspNetCore.Routing.EndpointMiddleware Executed endpoint 'backend_netcore_06.Controllers.DemoFilterController.TestExceptionFilter (backend_netcore_06)'
+2026-06-30 20:36:38.344 +07:00 [ERR] GlobalExceptionHandler Lỗi chưa xử lý tại /api/DemoFilter/TestExceptionFilter từ IP ::1 (User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.126.0 Chrome/148.0.7778.97 Electron/42.2.0 Safari/537.36)
+System.InvalidOperationException: No service for type 'ExceptionActionFilter' has been registered.
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+   at Microsoft.AspNetCore.Mvc.ServiceFilterAttribute.CreateInstance(IServiceProvider serviceProvider)
+   at Microsoft.AspNetCore.Mvc.Filters.DefaultFilterProvider.ProvideFilter(FilterProviderContext context, FilterItem filterItem)
+   at Microsoft.AspNetCore.Mvc.Filters.DefaultFilterProvider.OnProvidersExecuting(FilterProviderContext context)
+   at Microsoft.AspNetCore.Mvc.Filters.FilterFactory.CreateUncachedFiltersCore(IFilterProvider[] filterProviders, ActionContext actionContext, List`1 filterItems)
+   at Microsoft.AspNetCore.Mvc.Filters.FilterFactory.GetAllFilters(IFilterProvider[] filterProviders, ActionContext actionContext)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvokerCache.GetCachedResult(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Routing.ControllerRequestDelegateFactory.<>c__DisplayClass12_0.<CreateRequestDelegate>b__0(HttpContext context)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.Invoke(HttpContext httpContext)
+   at middleware.Middleware.CountIpRequestMiddleware.InvokeAsync(HttpContext context, RequestDelegate next) in /Users/loitph/Codezone/dotnet/BCNET06/28_backend_netcore_06/middleware/CountRequestMiddleware.cs:line 47
+   at Microsoft.AspNetCore.Builder.UseMiddlewareExtensions.InterfaceMiddlewareBinder.<>c__DisplayClass2_0.<<CreateMiddleware>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2026-06-30 20:36:38.345 +07:00 [ERR] Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware An unhandled exception has occurred while executing the request.
+System.InvalidOperationException: No service for type 'ExceptionActionFilter' has been registered.
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+   at Microsoft.AspNetCore.Mvc.ServiceFilterAttribute.CreateInstance(IServiceProvider serviceProvider)
+   at Microsoft.AspNetCore.Mvc.Filters.DefaultFilterProvider.ProvideFilter(FilterProviderContext context, FilterItem filterItem)
+   at Microsoft.AspNetCore.Mvc.Filters.DefaultFilterProvider.OnProvidersExecuting(FilterProviderContext context)
+   at Microsoft.AspNetCore.Mvc.Filters.FilterFactory.CreateUncachedFiltersCore(IFilterProvider[] filterProviders, ActionContext actionContext, List`1 filterItems)
+   at Microsoft.AspNetCore.Mvc.Filters.FilterFactory.GetAllFilters(IFilterProvider[] filterProviders, ActionContext actionContext)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvokerCache.GetCachedResult(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Routing.ControllerRequestDelegateFactory.<>c__DisplayClass12_0.<CreateRequestDelegate>b__0(HttpContext context)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.Invoke(HttpContext httpContext)
+   at middleware.Middleware.CountIpRequestMiddleware.InvokeAsync(HttpContext context, RequestDelegate next) in /Users/loitph/Codezone/dotnet/BCNET06/28_backend_netcore_06/middleware/CountRequestMiddleware.cs:line 47
+   at Microsoft.AspNetCore.Builder.UseMiddlewareExtensions.InterfaceMiddlewareBinder.<>c__DisplayClass2_0.<<CreateMiddleware>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2026-06-30 20:36:38.346 +07:00 [ERR] Serilog.AspNetCore.RequestLoggingMiddleware HTTP GET /api/DemoFilter/TestExceptionFilter responded 500 in 74.3780 ms
+2026-06-30 20:36:38.346 +07:00 [DBG] Microsoft.EntityFrameworkCore.Infrastructure 'UserDBContext' disposed.
+2026-06-30 20:36:38.346 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Disposing connection to database 'db_user' on server 'localhost,1433'.
+2026-06-30 20:36:38.346 +07:00 [DBG] Microsoft.EntityFrameworkCore.Database.Connection Disposed connection to database '' on server '' (0ms).
+2026-06-30 20:36:38.346 +07:00 [INF] Microsoft.AspNetCore.Hosting.Diagnostics Request finished HTTP/1.1 GET http://localhost:5124/api/DemoFilter/TestExceptionFilter - 500 null null 77.4915ms
+2026-06-30 20:36:45.213 +07:00 [INF] Microsoft.Hosting.Lifetime Application is shutting down...
+2026-06-30 20:36:45.214 +07:00 [DBG] Microsoft.Extensions.Hosting.Internal.Host Hosting stopping
+2026-06-30 20:36:45.224 +07:00 [DBG] Microsoft.Extensions.Hosting.Internal.Host Hosting stopped
