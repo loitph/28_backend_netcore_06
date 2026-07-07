@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using middleware.Middleware;
 using Serilog;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,26 @@ builder.Services.AddDbContext<DBQuanLyNhanVienContext>();
 //DI memory cache
 builder.Services.AddMemoryCache();
 
+// DI redis cache
+var redisServer = builder.Configuration["Redis:Configuration"];
+var redisUsername = builder.Configuration["Redis:username"];
+var redisPassword = builder.Configuration["Redis:password"];
+
+// Register the connection multiplexer as a singleton service
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = redisServer;
+    options.InstanceName = builder.Configuration["Redis:InstanceName"];
+    options.ConfigurationOptions = new StackExchange.Redis.ConfigurationOptions
+    {
+        EndPoints = { redisServer },
+        // User = redisUsername,
+        // Password = redisPassword
+    };
+});
+
+// Register the RedisService as a singleton service
+builder.Services.AddSingleton<RedisService>();
 
 builder.Services.AddOpenApi(options =>
 {
