@@ -5,6 +5,10 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>_28_backend_netcore_06</RootNamespace>
+    <!-- Sinh file XML chú thích để OpenAPI/Swagger hiển thị summary, param, response... -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- Tắt cảnh báo CS1591 (thiếu XML comment ở public member) cho đỡ ồn -->
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

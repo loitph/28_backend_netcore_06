@@ -6,6 +6,7 @@
 /Users/loitph/Codezone/dotnet/BCNET06/28_backend_netcore_06/bin/Debug/net10.0/backend_netcore_06.runtimeconfig.json
 /Users/loitph/Codezone/dotnet/BCNET06/28_backend_netcore_06/bin/Debug/net10.0/backend_netcore_06.dll
 /Users/loitph/Codezone/dotnet/BCNET06/28_backend_netcore_06/bin/Debug/net10.0/backend_netcore_06.pdb
+/Users/loitph/Codezone/dotnet/BCNET06/28_backend_netcore_06/bin/Debug/net10.0/backend_netcore_06.xml
 /Users/loitph/Codezone/dotnet/BCNET06/28_backend_netcore_06/bin/Debug/net10.0/AutoMapper.dll
 /Users/loitph/Codezone/dotnet/BCNET06/28_backend_netcore_06/bin/Debug/net10.0/Azure.Core.dll
 /Users/loitph/Codezone/dotnet/BCNET06/28_backend_netcore_06/bin/Debug/net10.0/Azure.Identity.dll
@@ -172,6 +173,7 @@
 /Users/loitph/Codezone/dotnet/BCNET06/28_backend_netcore_06/obj/Debug/net10.0/backend_.61E7E210.Up2Date
 /Users/loitph/Codezone/dotnet/BCNET06/28_backend_netcore_06/obj/Debug/net10.0/backend_netcore_06.dll
 /Users/loitph/Codezone/dotnet/BCNET06/28_backend_netcore_06/obj/Debug/net10.0/refint/backend_netcore_06.dll
+/Users/loitph/Codezone/dotnet/BCNET06/28_backend_netcore_06/obj/Debug/net10.0/backend_netcore_06.xml
 /Users/loitph/Codezone/dotnet/BCNET06/28_backend_netcore_06/obj/Debug/net10.0/backend_netcore_06.pdb
 /Users/loitph/Codezone/dotnet/BCNET06/28_backend_netcore_06/obj/Debug/net10.0/backend_netcore_06.genruntimeconfig.cache
 /Users/loitph/Codezone/dotnet/BCNET06/28_backend_netcore_06/obj/Debug/net10.0/ref/backend_netcore_06.dll

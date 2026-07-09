@@ -32,6 +32,14 @@ namespace backend_netcore_dotnet06.Controllers
       _userContext = userContext;
     }
 
+    /// <summary>
+    /// Lấy danh sách tất cả người dùng từ Redis cache hoặc từ cơ sở dữ liệu nếu không có trong cache.
+    /// </summary>
+    /// <returns>
+    ///  Danh sách người dùng dưới dạng JSON.
+    /// </returns>
+    /// <response code="200">Trả về danh sách người dùng.</response>
+    /// <response code="500">Lỗi server.</response>
     [HttpGet("GetAllUserRedis")]
     public async Task<ActionResult> GetAllUserRedis()
     {
